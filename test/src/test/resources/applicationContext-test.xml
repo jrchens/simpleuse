@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!--<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">-->
+        <!--<property name="driverClassName" value="com.mysql.jdbc.Driver"/>-->
+        <!--<property name="url" value="jdbc:mysql:///simpleuse"/>-->
+        <!--<property name="username" value="simpleuse"/>-->
+        <!--<property name="password" value="simpleuse"/>-->
+    <!--</bean>-->
+
+    <bean id="textEncryptor" class="org.jasypt.util.text.BasicTextEncryptor">
+        <property name="password" value="BN2sBTWFTtyFgOBrWBfHcA=="></property>
+    </bean>
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+        <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+        <property name="jdbcUrl" value="jdbc:mysql:///simpleuse"/>
+        <property name="user" value="simpleuse"/>
+        <property name="password" value="#{@textEncryptor.decrypt('ZJGp389mo9fKbMAel9YmmoR1cf9KZv0D')}"/>
+        <!--<property name="password" value="simpleuse"/>-->
+        <!--<property name="description" value="#{T(com.google.common.hash.Hashing).md5().hashString('123', T(com.google.common.base.Charsets).UTF_8).toString()}"/>-->
+        <!--<property name="description" value="#{@textEncryptor.decrypt('PB8mozIz8iUjJmmi6cuVs8A2THuNvAUN')}"/>-->
+    </bean>
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource" />
+        <!--<property name="configuration">-->
+            <!--<bean class="org.apache.ibatis.session.Configuration">-->
+                <!--<property name="mapUnderscoreToCamelCase" value="true"/>-->
+            <!--</bean>-->
+        <!--</property>-->
+        <property name="plugins">
+            <array>
+                <bean class="com.github.pagehelper.PageInterceptor">
+                    <property name="properties">
+                        <value>
+                            <!--helperDialect=mysql-->
+                            reasonable=true
+                            <!--supportMethodsArguments=true-->
+                            <!--params=count=countSql-->
+                            <!--autoRuntimeDialect=true-->
+                        </value>
+                    </property>
+                </bean>
+            </array>
+        </property>
+
+    </bean>
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="mybatis.mappers" />
+        <!--<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>-->
+    </bean>
+
+    <!--<bean id="userMapper" class="org.mybatis.spring.mapper.MapperFactoryBean">-->
+        <!--<property name="mapperInterface" value="mybatis.UserMapper" />-->
+        <!--<property name="sqlSessionFactory" ref="sqlSessionFactory" />-->
+    <!--</bean>-->
+
+</beans>
