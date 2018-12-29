@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.com.simpleuse.sys.mappers.ConfigMapper">
+  <resultMap id="BaseResultMap" type="cn.com.simpleuse.sys.domain.Config">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="cfg_code" jdbcType="VARCHAR" property="cfgCode" />
+    <result column="cfg_name" jdbcType="VARCHAR" property="cfgName" />
+    <result column="cfg_value" jdbcType="VARCHAR" property="cfgValue" />
+    <result column="is_disabled" jdbcType="BIT" property="disabled" />
+    <result column="is_deleted" jdbcType="BIT" property="deleted" />
+    <result column="cruser" jdbcType="VARCHAR" property="cruser" />
+    <result column="crtime" jdbcType="TIMESTAMP" property="crtime" />
+    <result column="mduser" jdbcType="VARCHAR" property="mduser" />
+    <result column="mdtime" jdbcType="TIMESTAMP" property="mdtime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, cfg_code, cfg_name, cfg_value, is_disabled, is_deleted, cruser, crtime, mduser, 
+    mdtime
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from sys_config
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from sys_config
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="cn.com.simpleuse.sys.domain.Config">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sys_config (cfg_code, cfg_name, cfg_value, 
+      is_disabled, is_deleted, cruser, 
+      crtime, mduser, mdtime
+      )
+    values (#{cfgCode,jdbcType=VARCHAR}, #{cfgName,jdbcType=VARCHAR}, #{cfgValue,jdbcType=VARCHAR}, 
+      #{disabled,jdbcType=BIT}, #{deleted,jdbcType=BIT}, #{cruser,jdbcType=VARCHAR}, 
+      #{crtime,jdbcType=TIMESTAMP}, #{mduser,jdbcType=VARCHAR}, #{mdtime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="cn.com.simpleuse.sys.domain.Config">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Long">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into sys_config
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cfgCode != null">
+        cfg_code,
+      </if>
+      <if test="cfgName != null">
+        cfg_name,
+      </if>
+      <if test="cfgValue != null">
+        cfg_value,
+      </if>
+      <if test="disabled != null">
+        is_disabled,
+      </if>
+      <if test="deleted != null">
+        is_deleted,
+      </if>
+      <if test="cruser != null">
+        cruser,
+      </if>
+      <if test="crtime != null">
+        crtime,
+      </if>
+      <if test="mduser != null">
+        mduser,
+      </if>
+      <if test="mdtime != null">
+        mdtime,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cfgCode != null">
+        #{cfgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cfgName != null">
+        #{cfgName,jdbcType=VARCHAR},
+      </if>
+      <if test="cfgValue != null">
+        #{cfgValue,jdbcType=VARCHAR},
+      </if>
+      <if test="disabled != null">
+        #{disabled,jdbcType=BIT},
+      </if>
+      <if test="deleted != null">
+        #{deleted,jdbcType=BIT},
+      </if>
+      <if test="cruser != null">
+        #{cruser,jdbcType=VARCHAR},
+      </if>
+      <if test="crtime != null">
+        #{crtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mduser != null">
+        #{mduser,jdbcType=VARCHAR},
+      </if>
+      <if test="mdtime != null">
+        #{mdtime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.com.simpleuse.sys.domain.Config">
+    update sys_config
+    <set>
+      <if test="cfgCode != null">
+        cfg_code = #{cfgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="cfgName != null">
+        cfg_name = #{cfgName,jdbcType=VARCHAR},
+      </if>
+      <if test="cfgValue != null">
+        cfg_value = #{cfgValue,jdbcType=VARCHAR},
+      </if>
+      <if test="disabled != null">
+        is_disabled = #{disabled,jdbcType=BIT},
+      </if>
+      <if test="deleted != null">
+        is_deleted = #{deleted,jdbcType=BIT},
+      </if>
+      <if test="cruser != null">
+        cruser = #{cruser,jdbcType=VARCHAR},
+      </if>
+      <if test="crtime != null">
+        crtime = #{crtime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="mduser != null">
+        mduser = #{mduser,jdbcType=VARCHAR},
+      </if>
+      <if test="mdtime != null">
+        mdtime = #{mdtime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.com.simpleuse.sys.domain.Config">
+    update sys_config
+    set cfg_code = #{cfgCode,jdbcType=VARCHAR},
+      cfg_name = #{cfgName,jdbcType=VARCHAR},
+      cfg_value = #{cfgValue,jdbcType=VARCHAR},
+      is_disabled = #{disabled,jdbcType=BIT},
+      is_deleted = #{deleted,jdbcType=BIT},
+      cruser = #{cruser,jdbcType=VARCHAR},
+      crtime = #{crtime,jdbcType=TIMESTAMP},
+      mduser = #{mduser,jdbcType=VARCHAR},
+      mdtime = #{mdtime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

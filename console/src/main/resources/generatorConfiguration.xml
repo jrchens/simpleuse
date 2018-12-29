@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC
+        "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+
+    <classPathEntry location="/Users/chensheng/.m2/repository/mysql/mysql-connector-java/5.1.47/mysql-connector-java-5.1.47.jar"/>
+
+    <context id="context" targetRuntime="MyBatis3">
+        <commentGenerator>
+            <property name="suppressAllComments" value="true"/>
+            <!--<property name="suppressDate" value="true"/>-->
+            <!--<property name="addRemarkComments" value="true"/>-->
+            <!--<property name="dateFormat" value="true"/>-->
+        </commentGenerator>
+
+        <jdbcConnection userId="simpleuse" password="simpleuse" driverClass="com.mysql.jdbc.Driver" connectionURL="jdbc:mysql:///simpleuse"/>
+
+        <javaTypeResolver>
+            <property name="forceBigDecimals" value="false"/>
+        </javaTypeResolver>
+
+        <javaModelGenerator targetPackage="cn.com.simpleuse.sys.domain" targetProject=".">
+            <property name="enableSubPackages" value="true"/>
+            <property name="trimStrings" value="true"/>
+        </javaModelGenerator>
+
+        <sqlMapGenerator targetPackage="cn.com.simpleuse.sys.mappers" targetProject=".">
+            <property name="enableSubPackages" value="true"/>
+        </sqlMapGenerator>
+
+        <javaClientGenerator targetPackage="cn.com.simpleuse.sys.mappers" type="XMLMAPPER" targetProject=".">
+        <!--<javaClientGenerator targetPackage="mybatis.mappers" type="ANNOTATEDMAPPER" targetProject=".">-->
+        <!--<javaClientGenerator targetPackage="mybatis.mappers" type="MIXEDMAPPER" targetProject=".">-->
+            <property name="enableSubPackages" value="true"/>
+        </javaClientGenerator>
+
+        <!--<table schema="simpleuse" tableName="sys_config" enableCountByExample="false" enableDeleteByExample="false"-->
+               <!--enableSelectByExample="false" enableUpdateByExample="false" domainObjectName="Config">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+            <!--<columnRenamingRule searchString="^is_" replaceString=""/>-->
+        <!--</table>-->
+        <!--<table schema="simpleuse" tableName="sys_dict" enableCountByExample="false" enableDeleteByExample="false"-->
+               <!--enableSelectByExample="false" enableUpdateByExample="false" domainObjectName="Dict">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+            <!--<columnRenamingRule searchString="^is_" replaceString=""/>-->
+        <!--</table>-->
+        <!--<table schema="simpleuse" tableName="sys_group" enableCountByExample="false" enableDeleteByExample="false"-->
+               <!--enableSelectByExample="false" enableUpdateByExample="false" domainObjectName="Group">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+            <!--<columnRenamingRule searchString="^is_" replaceString=""/>-->
+        <!--</table>-->
+        <!--<table schema="simpleuse" tableName="sys_group_role_rel" enableCountByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false" domainObjectName="GroupRoleRel">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+            <!--<columnRenamingRule searchString="^is_" replaceString=""/>-->
+        <!--</table>-->
+        <!--<table schema="simpleuse" tableName="sys_perm" enableCountByExample="false" enableDeleteByExample="false"-->
+               <!--enableSelectByExample="false" enableUpdateByExample="false" domainObjectName="Perm">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+            <!--<columnRenamingRule searchString="^is_" replaceString=""/>-->
+        <!--</table>-->
+        <!--<table schema="simpleuse" tableName="sys_role" enableCountByExample="false" enableDeleteByExample="false"-->
+               <!--enableSelectByExample="false" enableUpdateByExample="false" domainObjectName="Role">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+            <!--<columnRenamingRule searchString="^is_" replaceString=""/>-->
+        <!--</table>-->
+        <!--<table schema="simpleuse" tableName="sys_role_perm_rel" enableCountByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false" domainObjectName="RolePermRel">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+            <!--<columnRenamingRule searchString="^is_" replaceString=""/>-->
+        <!--</table>-->
+        <!--<table schema="simpleuse" tableName="sys_user" enableCountByExample="false" enableDeleteByExample="false"-->
+               <!--enableSelectByExample="false" enableUpdateByExample="false" domainObjectName="User">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+            <!--<columnRenamingRule searchString="^is_" replaceString=""/>-->
+        <!--</table>-->
+        <table schema="simpleuse" tableName="sys_user_group_rel" enableCountByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false" domainObjectName="UserGroupRel">
+            <generatedKey column="id" sqlStatement="MySql" identity="true"/>
+            <columnRenamingRule searchString="^is_" replaceString=""/>
+        </table>
+        <!--<table schema="simpleuse" tableName="sys_user_role_rel" enableCountByExample="false"-->
+               <!--enableDeleteByExample="false" enableSelectByExample="false" enableUpdateByExample="false" domainObjectName="UserRoleRel">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+            <!--<columnRenamingRule searchString="^is_" replaceString=""/>-->
+        <!--</table>-->
+
+
+        <!--<table tableName="" enableCountByExample="false" enableDeleteByExample="false"-->
+               <!--enableSelectByExample="false" enableUpdateByExample="false">-->
+            <!--<generatedKey column="id" sqlStatement="MySql" identity="true"/>-->
+            <!--<domainObjectRenamingRule searchString="^sys_" replaceString="" />-->
+            <!--<columnRenamingRule searchString="^is_" replaceString="" />-->
+        <!--</table>-->
+    </context>
+</generatorConfiguration>
