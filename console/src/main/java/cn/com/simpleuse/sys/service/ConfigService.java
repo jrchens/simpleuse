@@ -1,12 +1,11 @@
-package cn.com.simpleuse.sys.mappers;
+package cn.com.simpleuse.sys.service;
 
 import cn.com.simpleuse.sys.domain.Config;
+import com.github.pagehelper.Page;
 
 import java.util.List;
 
-public interface ConfigMapper {
-    int deleteByPrimaryKey(Long id);
-
+public interface ConfigService {
     int insert(Config record);
 
     int insertSelective(Config record);
@@ -19,5 +18,7 @@ public interface ConfigMapper {
 
     int removeByPrimaryKey(Long id);
 
-    List<Config> selectByCfgName(String cfgName);
+    int batchRemoveByPrimaryKey(List<Long> ids);
+
+    Page<Config> selectByCfgName(String cfgName, Integer pageNum, Integer pageSize);
 }

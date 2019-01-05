@@ -59,8 +59,8 @@
 
     <!--${project}-yyyyMMdd-i.log (180 days,30G)-->
     <root level="${LOG_LEVEL}">
-        <!--<appender-ref ref="STDOUT"/>-->
-        <appender-ref ref="FILE"/>
-        <appender-ref ref="FILE-ERROR"/>
+        <appender-ref ref="STDOUT"/>
+        <!--<appender-ref ref="FILE"/>-->
+        <!--<appender-ref ref="FILE-ERROR"/>-->
     </root>
 </configuration>

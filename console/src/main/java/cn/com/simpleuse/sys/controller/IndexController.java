@@ -7,9 +7,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class IndexController {
 
-    @RequestMapping(value = "/",method = RequestMethod.GET)
-    public String index() {
-        return "index";
+    @RequestMapping(value = {"/"}, method = RequestMethod.GET)
+    public String index(/*Model model*/) {
+//        model.addAttribute("CURRENT_PAGE_TITLE", "index");
+        return "redirect:/console/index";
     }
 
 }

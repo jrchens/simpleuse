@@ -15,7 +15,8 @@
     <context:component-scan base-package="cn.com.simpleuse.*.controller"/>
     
     <!--<mvc:resources mapping="/MP_verify_JTPU0IBySjxjEA6t.txt" location="/MP_verify_JTPU0IBySjxjEA6t.txt"/>-->
-    <!--<mvc:resources mapping="/resources/**" location="/WEB-INF/resources/"/>-->
+    <mvc:resources mapping="/resources/**" location="/WEB-INF/resources/" cache-period="0"/>
+    <!--<mvc:resources mapping="/**/*.html" location="/WEB-INF/views/" cache-period="0"/>-->
 
     <!--<bean id="messageSource"-->
           <!--class="org.springframework.context.support.ResourceBundleMessageSource">-->

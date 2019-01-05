@@ -6,7 +6,7 @@
     <%@ include file="../resources/css.jsp"%>
 </head>
 <body>
-index
+console
 <%@ include file="../resources/js.jsp"%>
 </body>
 </html>

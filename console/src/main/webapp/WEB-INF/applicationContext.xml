@@ -3,11 +3,14 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/tx
         http://www.springframework.org/schema/tx/spring-tx.xsd
         http://www.springframework.org/schema/aop
-        http://www.springframework.org/schema/aop/spring-aop.xsd">
+        http://www.springframework.org/schema/aop/spring-aop.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
 
     <!--<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">-->
         <!--<property name="driverClassName" value="com.mysql.jdbc.Driver"/>-->
@@ -15,6 +18,9 @@
         <!--<property name="username" value="simpleuse"/>-->
         <!--<property name="password" value="simpleuse"/>-->
     <!--</bean>-->
+
+
+    <context:component-scan base-package="cn.com.simpleuse.*.**.service.impl"></context:component-scan>
 
     <!-- the transactional advice (what 'happens'; see the <aop:advisor/> bean below) -->
     <tx:advice id="txAdvice" transaction-manager="transactionManager">
@@ -38,15 +44,15 @@
         <aop:advisor advice-ref="txAdvice" pointcut-ref="serviceOperation"/>
     </aop:config>
 
-    <bean id="textEncryptor" class="org.jasypt.util.text.BasicTextEncryptor">
-        <property name="password" value="BN2sBTWFTtyFgOBrWBfHcA=="></property>
-    </bean>
+    <!--<bean id="textEncryptor" class="org.jasypt.util.text.BasicTextEncryptor">-->
+        <!--<property name="password" value="BN2sBTWFTtyFgOBrWBfHcA=="></property>-->
+    <!--</bean>-->
     <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
         <property name="driverClass" value="com.mysql.jdbc.Driver"/>
         <property name="jdbcUrl" value="jdbc:mysql:///simpleuse"/>
         <property name="user" value="simpleuse"/>
-        <property name="password" value="#{@textEncryptor.decrypt('ZJGp389mo9fKbMAel9YmmoR1cf9KZv0D')}"/>
-        <!--<property name="password" value="simpleuse"/>-->
+        <!--<property name="password" value="#{@textEncryptor.decrypt('ZJGp389mo9fKbMAel9YmmoR1cf9KZv0D')}"/>-->
+        <property name="password" value="simpleuse"/>
         <!--<property name="description" value="#{T(com.google.common.hash.Hashing).md5().hashString('123', T(com.google.common.base.Charsets).UTF_8).toString()}"/>-->
         <!--<property name="description" value="#{@textEncryptor.decrypt('PB8mozIz8iUjJmmi6cuVs8A2THuNvAUN')}"/>-->
     </bean>
@@ -80,7 +86,7 @@
 
     </bean>
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="mybatis.mappers" />
+        <property name="basePackage" value="cn.com.simpleuse.*.**.mappers" />
         <!--<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>-->
     </bean>
 
@@ -88,5 +94,58 @@
         <!--<property name="mapperInterface" value="mybatis.UserMapper" />-->
         <!--<property name="sqlSessionFactory" ref="sqlSessionFactory" />-->
     <!--</bean>-->
+
+
+
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <!-- override these for application-specific URLs if you like:-->
+        <property name="loginUrl" value="/login"/>
+        <property name="successUrl" value="/index"/>
+        <!--<property name="unauthorizedUrl" value="/unauthorized.jsp"/>-->
+        <!-- The 'filters' property is not necessary since any declared javax.servlet.Filter bean  -->
+        <!-- defined will be automatically acquired and available via its beanName in chain        -->
+        <!-- definitions, but you can perform instance overrides or name aliases here if you like: -->
+        <!-- <property name="filters">
+            <util:map>
+                <entry key="anAlias" value-ref="someFilter"/>
+            </util:map>
+        </property> -->
+        <property name="filterChainDefinitions">
+            <value>
+                # some example chain definitions:
+                # /admin/** = authc, roles[admin]
+                # /docs/** = authc, perms[document:read]
+                /login = anon
+                /** = authc
+                # more URL-to-FilterChain definitions here
+            </value>
+        </property>
+    </bean>
+    <!-- Define any javax.servlet.Filter beans you want anywhere in this application context.   -->
+    <!-- They will automatically be acquired by the 'shiroFilter' bean above and made available -->
+    <!-- to the 'filterChainDefinitions' property.  Or you can manually/explicitly add them     -->
+    <!-- to the shiroFilter's 'filters' Map if desired. See its JavaDoc for more details.       -->
+    <!--<bean id="someFilter" class="..."/>-->
+    <!--<bean id="anotherFilter" class="..."> ... </bean>-->
+
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <!-- Single realm app.  If you have multiple realms, use the 'realms' property instead. -->
+        <property name="realm" ref="myRealm"/>
+        <!-- By default the servlet container sessions will be used.  Uncomment this line
+             to use shiro's native sessions (see the JavaDoc for more): -->
+        <!-- <property name="sessionMode" value="native"/> -->
+    </bean>
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+    <!-- Define the Shiro Realm implementation you want to use to connect to your back-end -->
+    <!-- security datasource: -->
+    <bean id="myRealm" class="org.apache.shiro.realm.jdbc.JdbcRealm">
+        <property name="dataSource" ref="dataSource"></property>
+        <property name="authenticationQuery" value="select password from sys_user where username = ?"></property>
+        <property name="userRolesQuery" value="SELECT rolename FROM sys_user_role_rel where username = ? order by srt"></property>
+        <property name="permissionsQuery" value="SELECT permname FROM sys_role_perm_rel where rolename = ? order by srt"></property>
+    </bean>
+
 
 </beans>
