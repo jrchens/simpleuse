@@ -18,7 +18,7 @@ public class LoginController {
     private static final Logger logger = LoggerFactory.getLogger(LoginController.class);
 
 
-    @RequestMapping(value = "login", method = RequestMethod.GET)
+    @RequestMapping(value = {"login","/"}, method = RequestMethod.GET)
     public String login(Model model) {
         model.addAttribute("CURRENT_PAGE_TITLE", "login");
         return "login";
@@ -28,7 +28,7 @@ public class LoginController {
     public String login(LoginUser loginUser, BindingResult bindingResult, Model model) {
         try {
             SecurityUtils.getSubject().login(new UsernamePasswordToken(loginUser.getUsername(), loginUser.getPassword(), loginUser.isRememberMe()));
-            return "redirect:/";
+            return "redirect:/console";
         } catch (Exception e) {
             logger.error("LoginController.login", e);
             // IncorrectCredentialsException

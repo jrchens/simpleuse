@@ -2,23 +2,28 @@ package cn.com.simpleuse.sys.controller;
 
 import cn.com.simpleuse.sys.domain.Config;
 import cn.com.simpleuse.sys.exception.SysControllerException;
+import cn.com.simpleuse.sys.exception.SysServiceException;
 import cn.com.simpleuse.sys.service.ConfigService;
 import com.github.pagehelper.Page;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @Controller
-//@RequestMapping(value = "system")
+@RequestMapping(value = "sys")
 public class ConfigController {
 
     private static final Logger logger = LoggerFactory.getLogger(ConfigController.class);
@@ -31,20 +36,39 @@ public class ConfigController {
         try {
             model.addAttribute("CURRENT_PAGE_TITLE", "config/index");
             return "config/index";
+        } catch (SysServiceException e) {
+            throw e;
         } catch (Exception e) {
             logger.error("ConfigController.index", e);
-            throw new SysControllerException();
+            throw new SysControllerException(e);
         }
     }
 
-    @RequestMapping(value = "config/query", method = RequestMethod.GET)
+    @RequestMapping(value = "config/query.json", method = RequestMethod.GET)
     @ResponseBody
-    public ResponseEntity<Page<Config>> query(String cfgName, Integer pageNum, Integer pageSize) {
+    public ResponseEntity<Map<String,Object>> query(String cfgName, Integer pageNum, Integer pageSize) {
+        Map<String,Object> result = Maps.newHashMap();
         try {
-            return ResponseEntity.ok(configService.selectByCfgName(cfgName, pageNum, pageSize));
+            Page<Config> page = configService.selectByCfgName(cfgName, pageNum, pageSize);
+            result.put("code",0);
+            result.put("msg","");
+            result.put("count",page.getTotal());
+            result.put("data",page.getResult());
+            return ResponseEntity.ok(result);
+        } catch (SysServiceException e) {
+            result.put("code",500);
+            result.put("msg",e.getMessage());
+            result.put("count",0);
+            result.put("data", Lists.newArrayList());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result);
         } catch (Exception e) {
             logger.error("ConfigController.query", e);
-            throw new SysControllerException();
+            result.put("code",500);
+            result.put("msg",e.getMessage());
+            result.put("count",0);
+            result.put("data", Lists.newArrayList());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result);
+
         }
     }
 
@@ -56,6 +80,8 @@ public class ConfigController {
             config.setCrtime(DateTime.now().toDate());
             model.addAttribute(config);
             return "config/create";
+        } catch (SysServiceException e) {
+            throw e;
         } catch (Exception e) {
             logger.error("ConfigController.create", e);
             throw new SysControllerException();
@@ -67,6 +93,8 @@ public class ConfigController {
         try {
             configService.insertSelective(record);
             return "redirect:/config/index";
+        } catch (SysServiceException e) {
+            throw e;
         } catch (Exception e) {
             logger.error("ConfigController.save", e);
             throw new SysControllerException();
@@ -79,6 +107,8 @@ public class ConfigController {
             model.addAttribute("CURRENT_PAGE_TITLE", "config/edit");
             model.addAttribute(configService.selectByPrimaryKey(id));
             return "config/edit";
+        } catch (SysServiceException e) {
+            throw e;
         } catch (Exception e) {
             logger.error("ConfigController.edit", e);
             throw new SysControllerException();
@@ -90,31 +120,57 @@ public class ConfigController {
         try {
             configService.updateByPrimaryKeySelective(record);
             return "redirect:/config/index";
+        } catch (SysServiceException e) {
+            throw e;
         } catch (Exception e) {
             logger.error("ConfigController.update", e);
             throw new SysControllerException();
         }
     }
 
-    @RequestMapping(value = "config/remove", method = RequestMethod.POST)
-    public String remove(Long id) {
+    @RequestMapping(value = "config/remove.json", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Map<String,Object>>  remove(Long id) {
+        Map<String,Object> result = Maps.newHashMap();
         try {
-            configService.removeByPrimaryKey(id);
-            return "redirect:/config/index";
+            int aff = configService.removeByPrimaryKey(id);
+
+            result.put("code",0);
+            result.put("msg","");
+            result.put("data",aff);
+            return ResponseEntity.ok(result);
+        } catch (SysServiceException e) {
+            result.put("code",500);
+            result.put("msg",e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result);
         } catch (Exception e) {
             logger.error("ConfigController.remove", e);
-            throw new SysControllerException();
+            result.put("code",500);
+            result.put("msg",e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result);
         }
     }
 
-    @RequestMapping(value = "config/batch-remove", method = RequestMethod.POST)
-    public String batchRemove(List<Long> ids) {
+    @RequestMapping(value = "config/batch-remove.json", method = RequestMethod.POST)
+    @ResponseBody
+    public ResponseEntity<Map<String,Object>>  batchRemove(@RequestBody List<Long> ids) {
+        Map<String,Object> result = Maps.newHashMap();
         try {
-            configService.batchRemoveByPrimaryKey(ids);
-            return "redirect:/config/index";
+            logger.info("sys/config/batch-remove ids:{}", Joiner.on(',').join(ids));
+            int aff = configService.batchRemoveByPrimaryKey(ids);
+            result.put("code",0);
+            result.put("msg","");
+            result.put("data",aff);
+            return ResponseEntity.ok(result);
+        } catch (SysServiceException e) {
+            result.put("code",500);
+            result.put("msg",e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result);
         } catch (Exception e) {
             logger.error("ConfigController.batchRemove", e);
-            throw new SysControllerException();
+            result.put("code",500);
+            result.put("msg",e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(result);
         }
     }
 }

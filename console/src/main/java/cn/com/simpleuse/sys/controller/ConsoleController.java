@@ -19,12 +19,12 @@ public class ConsoleController {
     @Autowired
     private ConfigService configService;
 
-    @RequestMapping(value = "console/index", method = RequestMethod.GET)
+    @RequestMapping(value = "console", method = RequestMethod.GET)
     public String index(Model model) {
         try {
 
             model.addAttribute("CURRENT_PAGE_TITLE", "console");
-            return "console/index";
+            return "console";
         } catch (Exception e) {
             logger.error("ConsoleController.index", e);
             throw new SysControllerException();

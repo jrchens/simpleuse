@@ -13,7 +13,7 @@
     <property name="LOG_MAX_HISTORY" value="180"/>
     <property name="LOG_MAX_FILE_SIZE" value="100MB"/>
     <property name="LOG_TOTAL_SIZE_CAP" value="30GB"/>
-    <property name="LOG_LEVEL" value="INFO"/>
+    <property name="LOG_LEVEL" value="DEBUG"/>
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_HOME}/${LOG_NAME}.log</file>

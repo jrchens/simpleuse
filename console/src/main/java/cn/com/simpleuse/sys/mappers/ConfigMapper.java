@@ -1,6 +1,7 @@
 package cn.com.simpleuse.sys.mappers;
 
 import cn.com.simpleuse.sys.domain.Config;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -17,7 +18,8 @@ public interface ConfigMapper {
 
     int updateByPrimaryKey(Config record);
 
-    int removeByPrimaryKey(Long id);
+    int removeByPrimaryKey(Config record);
 
+//    List<Config> selectByCfgName(@Param("cfgName") String cfgName);
     List<Config> selectByCfgName(String cfgName);
 }
