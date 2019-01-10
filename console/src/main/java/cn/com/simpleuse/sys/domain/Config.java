@@ -1,14 +1,21 @@
 package cn.com.simpleuse.sys.domain;
 
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+
 import java.util.Date;
 
 public class Config {
     private Long id;
 
+    @NotBlank
+    @Length(min = 4,max = 100)
     private String cfgCode;
-
+    @NotBlank
+    @Length(min = 1,max = 100)
     private String cfgName;
-
+    @NotBlank
+    @Length(min = 1,max = 200)
     private String cfgValue;
 
     private Boolean disabled;

@@ -10,7 +10,7 @@
 
 <div class="layui-fluid">
     <div class="layui-card">
-        <form:form action="${WEB_CONTEXT_PATH}/sys/config/query.json" method="get" class="layui-form layui-card-header layuiadmin-card-header-auto">
+        <form:form id="config-index-query-form" servletRelativeAction="/sys_config/query.json" method="get" class="layui-form layui-card-header layuiadmin-card-header-auto">
             <div class="layui-form-item">
                 <div class="layui-inline">
                     <label class="layui-form-label">配置名称</label>
@@ -41,16 +41,17 @@
 
         <div class="layui-card-body">
             <div style="padding-bottom: 10px;">
-                <a href="${WEB_CONTEXT_PATH}/sys/config/create" class="layui-btn">添加</a>
+                <a href="${WEB_CONTEXT_PATH}/sys_config/create" class="layui-btn">添加</a>
                 <%--<button class="layui-btn layuiadmin-btn-list" id="LAY-sys-config-add" data-type="add"></button>--%>
-                <button class="layui-btn" id="LAY-sys-config-batchdel">删除</button>
+                <button class="layui-btn" id="sys-config-batchdel">删除</button>
+                <button class="layui-btn" id="sys-config-index-disable-enable">禁用/启用</button>
             </div>
             <table id="LAY-sys-config-list" lay-filter="LAY-sys-config-list"></table>
             <script type="text/html" id="table-sys-config-list-disabled-btn">
                 {{#  if(d.disabled){ }}
-                <a href="javascript:;" class="layui-btn layui-btn-danger layui-btn-xs">是</a>
+                <a href="javascript:;" class="layui-btn layui-bg-orange layui-btn-xs">是</a>
                 {{#  } else { }}
-                <a href="javascript:;" class="layui-btn layui-btn-normal layui-btn-xs">否</a>
+                <a href="javascript:;" class="layui-btn layui-bg-gray layui-btn-xs">否</a>
                 {{#  } }}
             </script>
             <script type="text/html" id="table-sys-config-list-opt">
@@ -59,6 +60,17 @@
             </script>
         </div>
     </div>
+</div>
+<div class="layui-hide">
+    <form action="${WEB_CONTEXT_PATH}/sys_config/remove" method="post" id="sys-config-index-remove-form">
+        <input type="hidden" id="sys-config-index-remove-form-id" name="id">
+    </form>
+    <form action="${WEB_CONTEXT_PATH}/sys_config/batch-remove" method="post" id="sys-config-index-batch-remove-form">
+        <input type="hidden" id="sys-config-index-batch-remove-form-ids" name="ids[]">
+    </form>
+    <form action="${WEB_CONTEXT_PATH}/sys_config/batch-disable-enable" method="post" id="sys-config-index-batch-disable-enable-form">
+        <input type="hidden" id="sys-config-index-batch-disable-enable-form-list" name="list[]">
+    </form>
 </div>
 
 <%@ include file="../../resources/js.jsp"%>

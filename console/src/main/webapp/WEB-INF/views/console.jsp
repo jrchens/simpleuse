@@ -492,7 +492,7 @@
         <!-- 主体内容 -->
         <div class="layui-body" id="LAY_app_body">
             <div class="layadmin-tabsbody-item layui-show">
-                <iframe src="${WEB_CONTEXT_PATH}/sys/config/index" frameborder="0" class="layadmin-iframe"></iframe>
+                <iframe src="${WEB_CONTEXT_PATH}/sys_config/index" frameborder="0" class="layadmin-iframe"></iframe>
             </div>
         </div>
 

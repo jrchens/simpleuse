@@ -19,6 +19,7 @@ public interface ConfigService {
     int removeByPrimaryKey(Long id);
 
     int batchRemoveByPrimaryKey(List<Long> ids);
+    int batchDisableEnableByPrimaryKey(List<Config> list);
 
     Page<Config> selectByCfgName(String cfgName, Integer pageNum, Integer pageSize);
 }

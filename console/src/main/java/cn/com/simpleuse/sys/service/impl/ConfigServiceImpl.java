@@ -7,6 +7,7 @@ import cn.com.simpleuse.sys.service.ConfigService;
 import cn.com.simpleuse.sys.util.ErrUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
+import com.google.common.collect.Lists;
 import org.apache.shiro.SecurityUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
@@ -38,6 +39,10 @@ public class ConfigServiceImpl implements ConfigService {
     @Override
     public int insertSelective(Config record) {
         try {
+            Date now = DateTime.now().toDate();
+            String user = SecurityUtils.getSubject().getPrincipal().toString();
+            record.setCruser(user);
+            record.setCrtime(now);
             return configMapper.insertSelective(record);
         } catch (Exception e) {
             logger.error("ConfigServiceImpl.insertSelective.error", e);
@@ -58,6 +63,10 @@ public class ConfigServiceImpl implements ConfigService {
     @Override
     public int updateByPrimaryKeySelective(Config record) {
         try {
+            Date now = DateTime.now().toDate();
+            String user = SecurityUtils.getSubject().getPrincipal().toString();
+            record.setMduser(user);
+            record.setMdtime(now);
             return configMapper.updateByPrimaryKeySelective(record);
         } catch (Exception e) {
             logger.error("ConfigServiceImpl.updateByPrimaryKeySelective.error", e);
@@ -87,7 +96,7 @@ public class ConfigServiceImpl implements ConfigService {
             return configMapper.removeByPrimaryKey(config);
         } catch (Exception e) {
             logger.error("ConfigServiceImpl.removeByPrimaryKey.error", e);
-            throw new SysServiceException(ErrUtil.getErrCode("REMOVE_SELECTIVE_ERR"));
+            throw new SysServiceException(ErrUtil.getErrCode("REMOVE_ERR"));
         }
     }
 
@@ -97,6 +106,7 @@ public class ConfigServiceImpl implements ConfigService {
             int aff = 0;
             Date now = DateTime.now().toDate();
             String user = SecurityUtils.getSubject().getPrincipal().toString();
+            List<Config> list = Lists.newArrayList();
             for (Long id : ids
             ) {
                 Config config = new Config();
@@ -107,8 +117,28 @@ public class ConfigServiceImpl implements ConfigService {
             }
             return aff;
         } catch (Exception e) {
-            logger.error("ConfigServiceImpl.batchRemoveByPrimaryKey.error", e);
+            logger.error("ConfigServiceImpl.removeByPrimaryKey.error", e);
             throw new SysServiceException(ErrUtil.getErrCode("BATCH_REMOVE_ERR"));
+        }
+    }
+
+    @Override
+    public int batchDisableEnableByPrimaryKey(List<Config> list) {
+        try {
+            int aff = 0;
+            Date now = DateTime.now().toDate();
+            String user = SecurityUtils.getSubject().getPrincipal().toString();
+            for (Config config : list
+            ) {
+                config.setMduser(user);
+                config.setMdtime(now);
+                config.setDisabled(!config.getDisabled());
+                aff += configMapper.updateByPrimaryKeySelective(config);
+            }
+            return aff;
+        } catch (Exception e) {
+            logger.error("ConfigServiceImpl.batchDisableEnableByPrimaryKey.error", e);
+            throw new SysServiceException(ErrUtil.getErrCode("BATCH_DISABLE_ENABLE_ERR"));
         }
     }
 
