@@ -1,14 +1,26 @@
 package cn.com.simpleuse.sys.domain;
 
+import cn.com.simpleuse.validator.group.Save;
+import cn.com.simpleuse.validator.group.Update;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotBlank;
+
+import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class Role {
+
     private Long id;
 
+    @NotBlank(groups = {Save.class})
+    @Length(min = 2,max = 20,groups = {Save.class})
     private String rolename;
 
+    @NotBlank(groups = {Save.class, Update.class})
+    @Length(min = 1,max = 100,groups = {Save.class, Update.class})
     private String viewname;
 
+    @NotNull(groups = {Save.class, Update.class})
     private Boolean plus;
 
     private Boolean deleted;

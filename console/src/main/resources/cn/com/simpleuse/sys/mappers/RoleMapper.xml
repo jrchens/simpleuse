@@ -136,4 +136,27 @@
       mdtime = #{mdtime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+
+  <update id="removeByPrimaryKey" parameterType="cn.com.simpleuse.sys.domain.Role">
+    update sys_role
+    set
+      is_deleted = 1,
+      mduser = #{mduser,jdbcType=VARCHAR},
+      mdtime = #{mdtime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="selectByViewname" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sys_role
+    where is_deleted = 0
+    <if test="_parameter != null">
+      <bind name="viewname" value="'%'+_parameter+'%'"></bind>
+      and viewname like #{viewname}
+    </if>
+  </select>
+
+
 </mapper>
