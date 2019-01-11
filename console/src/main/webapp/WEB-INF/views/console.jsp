@@ -96,22 +96,22 @@
                         </a>
                         <dl class="layui-nav-child">
                             <dd data-name="console" class="layui-this">
-                                <a lay-href="${WEB_CONTEXT_PATH}/sys/user/index">用户管理</a>
+                                <a lay-href="${WEB_CONTEXT_PATH}/sys_user/index">用户管理</a>
                             </dd>
                             <dd data-name="console">
-                                <a lay-href="${WEB_CONTEXT_PATH}/sys/group/index">群组管理</a>
+                                <a lay-href="${WEB_CONTEXT_PATH}/sys_group/index">群组管理</a>
                             </dd>
                             <dd data-name="console">
                                 <a lay-href="${WEB_CONTEXT_PATH}/sys/role/index">角色管理</a>
                             </dd>
                             <dd data-name="console">
-                                <a lay-href="${WEB_CONTEXT_PATH}/sys/perm/index">权限管理</a>
+                                <a lay-href="${WEB_CONTEXT_PATH}/sys_perm/index">权限管理</a>
                             </dd>
                             <dd data-name="console">
-                                <a lay-href="${WEB_CONTEXT_PATH}/sys/dict/index">字典管理</a>
+                                <a lay-href="${WEB_CONTEXT_PATH}/sys_dict/index">字典管理</a>
                             </dd>
                             <dd data-name="console">
-                                <a lay-href="${WEB_CONTEXT_PATH}/sys/config/index">配置管理</a>
+                                <a lay-href="${WEB_CONTEXT_PATH}/sys_config/index">配置管理</a>
                             </dd>
                         </dl>
                     </li>
