@@ -3,7 +3,6 @@ layui.define(['table', 'form'], function(exports){
         ,table = layui.table
         ,form = layui.form;
 
-    /* config list */
     var queryUrl = $('#sys-role-index-query-form').attr('action');
     table.render({
         elem: '#sys-role-index-data-table'

@@ -40,10 +40,10 @@ public class RoleController {
     private RoleService roleService;
 
     @RequestMapping(value = "sys/role/index", method = RequestMethod.GET)
-    public String index(Role role,Model model) {
+    public String index(Role record,Model model) {
         try {
             model.addAttribute("CURRENT_PAGE_TITLE", "sys/role/index");
-            model.addAttribute(role);
+            model.addAttribute(record);
             return "sys/role/index";
         } catch (SysServiceException e) {
             throw e;
@@ -85,7 +85,6 @@ public class RoleController {
     public String create(Role record, Model model) {
         try {
             model.addAttribute("CURRENT_PAGE_TITLE", "sys/role/create");
-            record.setPlus(true);
             model.addAttribute(record);
             return "sys/role/create";
         } catch (SysServiceException e) {

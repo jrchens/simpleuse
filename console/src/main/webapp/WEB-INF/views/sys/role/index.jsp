@@ -15,7 +15,7 @@
                 <div class="layui-inline">
                     <label class="layui-form-label">角色名称</label>
                     <div class="layui-input-inline">
-                        <input type="text" name="viewname" placeholder="请输入" autocomplete="off" class="layui-input">
+                        <input type="text" name="viewname" placeholder="请输入角色名称" autocomplete="off" class="layui-input">
                     </div>
                 </div>
                 <%--<div class="layui-inline">--%>
