@@ -125,4 +125,31 @@
       mdtime = #{mdtime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+  <update id="removeByPrimaryKey" parameterType="cn.com.simpleuse.sys.domain.Group">
+    update sys_group
+    set
+      is_deleted = 1,
+      mduser = #{mduser,jdbcType=VARCHAR},
+      mdtime = #{mdtime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+  <select id="selectByViewname" parameterType="java.lang.String" resultMap="BaseResultMap">
+      select
+      <include refid="Base_Column_List"/>
+      from sys_group
+      <where>
+          is_deleted = 0
+          <if test="viewname != null">
+              <bind name="viewname" value="'%'+viewname+'%'"></bind>
+              and viewname like #{viewname}
+          </if>
+          <if test="sort != null">
+              order by ${sort}
+              <if test="order != null">
+                  ${order}
+              </if>
+          </if>
+      </where>
+  </select>
 </mapper>
