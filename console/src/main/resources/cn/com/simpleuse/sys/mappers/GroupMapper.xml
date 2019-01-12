@@ -144,12 +144,12 @@
               <bind name="viewname" value="'%'+viewname+'%'"></bind>
               and viewname like #{viewname}
           </if>
-          <if test="sort != null">
-              order by ${sort}
-              <if test="order != null">
-                  ${order}
-              </if>
-          </if>
+          <!--<if test="sort != null">-->
+              <!--order by ${sort}-->
+              <!--<if test="order != null">-->
+                  <!--${order}-->
+              <!--</if>-->
+          <!--</if>-->
       </where>
   </select>
 </mapper>

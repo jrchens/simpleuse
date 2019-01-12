@@ -7,14 +7,15 @@ import cn.com.simpleuse.sys.service.GroupService;
 import cn.com.simpleuse.sys.util.ErrUtil;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
-import com.mchange.v2.sql.SqlUtils;
+import com.google.common.base.Joiner;
+import com.google.common.collect.Lists;
 import org.apache.shiro.SecurityUtils;
 import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.HtmlUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -103,8 +104,14 @@ public class GroupServiceImpl implements GroupService {
     public Page<Group> selectByViewname(String viewname, Integer pageNum, Integer pageSize, String sort, String order) {
         try {
             Page<Group> page = PageHelper.startPage(pageNum, pageSize, true);
-            HtmlUtils.htmlEscape(sort   );
-            groupMapper.selectByViewname(viewname, sort, order);
+            if (StringUtils.hasText(sort)) {
+                List<String> sl = Lists.newArrayList(sort);
+                if (StringUtils.hasText(order)) {
+                    sl.add(order);
+                }
+                page.setOrderBy(Joiner.on(" ").join(sl));
+            }
+            groupMapper.selectByViewname(viewname);
             return page;
         } catch (Exception e) {
             logger.error("GroupServiceImpl.selectByViewname.err", e);

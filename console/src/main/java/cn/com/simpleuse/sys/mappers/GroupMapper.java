@@ -20,5 +20,5 @@ public interface GroupMapper {
 
     int removeByPrimaryKey(Group record);
 
-    List<Group> selectByViewname(@Param("viewname") String viewname, @Param("sort") String sort, @Param("order") String order);
+    List<Group> selectByViewname(@Param("viewname") String viewname/*, @Param("sort") String sort, @Param("order") String order*/);
 }
