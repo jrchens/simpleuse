@@ -2,6 +2,7 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="
         http://www.springframework.org/schema/beans
@@ -9,16 +10,29 @@
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context.xsd
         http://www.springframework.org/schema/mvc
-        http://www.springframework.org/schema/mvc/spring-mvc.xsd">
-
-    <!--xmlns:aop="http://www.springframework.org/schema/aop"-->
-    <!--http://www.springframework.org/schema/aop-->
-    <!--http://www.springframework.org/schema/aop/spring-aop.xsd-->
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <mvc:annotation-driven/>
-    <context:component-scan base-package="cn.com.simpleuse.*.controller"/>
-    
-    <!--<mvc:resources mapping="/MP_verify_JTPU0IBySjxjEA6t.txt" location="/MP_verify_JTPU0IBySjxjEA6t.txt"/>-->
+    <context:component-scan base-package="cn.com.simpleuse.*.controller">
+        <!--<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>-->
+    </context:component-scan>
+
+    <bean id="csrfTokenAspectObject" class="cn.com.simpleuse.web.aspect.CsrfTokenAspectObject"></bean>
+    <aop:aspectj-autoproxy>
+        <aop:include name="csrfTokenAspectObject"/>
+    </aop:aspectj-autoproxy>
+    <bean id="csrfTokenCacheManager"
+          class="org.springframework.cache.guava.GuavaCacheManager">
+        <property name="cacheNames">
+            <list>
+                <value>csrf_token</value>
+            </list>
+        </property>
+    </bean>
+
+
     <mvc:resources mapping="/resources/**" location="/WEB-INF/resources/" cache-period="0"/>
     <!--<mvc:resources mapping="/**/*.html" location="/WEB-INF/views/" cache-period="0"/>-->
 
@@ -48,15 +62,6 @@
     <!--<mvc:tiles-configurer>-->
         <!--<mvc:definitions location="classpath:applicationContext-tiles.xml"/>-->
     <!--</mvc:tiles-configurer>-->
-
-
-    <!--<bean id="tokenBeforeAdvice" class="cn.com.simpleuse.web.annotation.TokenBeforeAdvice"></bean>-->
-    <!--<aop:config>-->
-        <!--<aop:pointcut id="save" expression="execution(* cn.com.simpleuse..controller.*.save*(..))"></aop:pointcut>-->
-        <!--<aop:pointcut id="update" expression="execution(* cn.com.simpleuse..controller.*.update*(..))"></aop:pointcut>-->
-        <!--<aop:advisor advice-ref="tokenBeforeAdvice" pointcut-ref="save"/>-->
-        <!--<aop:advisor advice-ref="tokenBeforeAdvice" pointcut-ref="update"/>-->
-    <!--</aop:config>-->
 
     <mvc:view-resolvers>
         <!--<mvc:tiles view-class="org.springframework.web.servlet.view.tiles3.TilesView"/>-->
