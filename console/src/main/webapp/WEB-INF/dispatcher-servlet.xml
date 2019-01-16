@@ -14,7 +14,24 @@
         http://www.springframework.org/schema/aop
         http://www.springframework.org/schema/aop/spring-aop.xsd">
 
-    <mvc:annotation-driven/>
+    <mvc:annotation-driven>
+        <mvc:message-converters register-defaults="true">
+            <bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <constructor-arg>
+                    <bean class="com.fasterxml.jackson.databind.ObjectMapper">
+                        <constructor-arg>
+                            <bean class="com.fasterxml.jackson.core.JsonFactory">
+                                <property name="characterEscapes">
+                                    <bean class="cn.com.simpleuse.sys.bean.HtmlCharacterEscapes"/>
+                                </property>
+                            </bean>
+                        </constructor-arg>
+                    </bean>
+                </constructor-arg>
+            </bean>
+        </mvc:message-converters>
+    </mvc:annotation-driven>
+
     <context:component-scan base-package="cn.com.simpleuse.*.controller">
         <!--<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>-->
     </context:component-scan>
@@ -66,11 +83,23 @@
     <mvc:view-resolvers>
         <!--<mvc:tiles view-class="org.springframework.web.servlet.view.tiles3.TilesView"/>-->
         <mvc:jsp prefix="/WEB-INF/views/" suffix=".jsp"/>
-        <mvc:content-negotiation>
-            <mvc:default-views>
-                <bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView"/>
-            </mvc:default-views>
-        </mvc:content-negotiation>
+        <!--<mvc:content-negotiation>-->
+            <!--<mvc:default-views>-->
+                <!--<bean class="org.springframework.web.servlet.view.json.MappingJackson2JsonView">-->
+                    <!--<property name="objectMapper">-->
+                        <!--<bean class="com.fasterxml.jackson.databind.ObjectMapper">-->
+                            <!--<constructor-arg>-->
+                                <!--<bean class="com.fasterxml.jackson.core.JsonFactory">-->
+                                    <!--<property name="characterEscapes">-->
+                                        <!--<bean class="cn.com.simpleuse.sys.bean.HtmlCharacterEscapes></bean>-->
+                                    <!--</property>-->
+                                <!--</bean>-->
+                            <!--</constructor-arg>-->
+                        <!--</bean>-->
+                    <!--</property>-->
+                <!--</bean>-->
+            <!--</mvc:default-views>-->
+        <!--</mvc:content-negotiation>-->
     </mvc:view-resolvers>
 
 </beans>

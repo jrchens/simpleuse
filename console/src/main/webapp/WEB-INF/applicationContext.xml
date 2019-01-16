@@ -4,13 +4,16 @@
        xmlns:aop="http://www.springframework.org/schema/aop"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:cache="http://www.springframework.org/schema/cache"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
         http://www.springframework.org/schema/tx
         http://www.springframework.org/schema/tx/spring-tx.xsd
         http://www.springframework.org/schema/aop
         http://www.springframework.org/schema/aop/spring-aop.xsd
         http://www.springframework.org/schema/context
-        http://www.springframework.org/schema/context/spring-context.xsd">
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/cache
+        http://www.springframework.org/schema/cache/spring-cache.xsd">
 
     <!--<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">-->
         <!--<property name="driverClassName" value="com.mysql.jdbc.Driver"/>-->
@@ -21,6 +24,7 @@
 
 
     <context:component-scan base-package="cn.com.simpleuse.*.**.service.impl"></context:component-scan>
+
 
     <!-- the transactional advice (what 'happens'; see the <aop:advisor/> bean below) -->
     <tx:advice id="txAdvice" transaction-manager="transactionManager">
@@ -95,8 +99,6 @@
         <!--<property name="sqlSessionFactory" ref="sqlSessionFactory" />-->
     <!--</bean>-->
 
-
-
     <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
         <property name="securityManager" ref="securityManager"/>
         <!-- override these for application-specific URLs if you like:-->
@@ -147,5 +149,13 @@
         <property name="permissionsQuery" value="SELECT permname FROM sys_role_perm_rel where rolename = ? order by srt"></property>
     </bean>
 
+    <!--<cache:annotation-driven/>-->
+
+    <!--<bean id="csrfFilter" class="org.springframework.security.web.csrf.CsrfFilter">-->
+        <!--<constructor-arg>-->
+            <!--<bean class="org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository"/>-->
+        <!--</constructor-arg>-->
+    <!--</bean>-->
+    <!--<bean id="requestDataValueProcessor" class="org.springframework.security.web.servlet.support.csrf.CsrfRequestDataValueProcessor"/>-->
 
 </beans>

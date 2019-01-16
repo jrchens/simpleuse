@@ -62,9 +62,11 @@
 </div>
 <div class="layui-hide">
     <form:form commandName="group" servletRelativeAction="/sys/group/remove" method="post" id="sys-group-index-remove-form">
+        <input type="hidden" name="_csrf_token" value="${_csrf_token}">
         <input type="hidden" id="sys-group-index-remove-form-id" name="id">
     </form:form>
     <form:form commandName="group" servletRelativeAction="/sys/group/batch-remove" method="post" id="sys-group-index-batch-remove-form">
+        <input type="hidden" name="_csrf_token" value="${_csrf_token}">
         <input type="hidden" id="sys-group-index-batch-remove-form-ids" name="ids">
     </form:form>
 </div>

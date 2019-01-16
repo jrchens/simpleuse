@@ -14,6 +14,7 @@
             <div class="layui-card-header">新建群组</div>
             <div class="layui-card-body" style="padding: 15px;">
                 <form:form servletRelativeAction="/sys/group/save" method="post" commandName="group" cssClass="layui-form" lay-filter="sys-group-create-form">
+                    <input type="hidden" name="_csrf_token" value="${_csrf_token}">
                     <div class="layui-form-item">
                         <label class="layui-form-label">代码</label>
                         <div class="layui-input-block">
@@ -31,6 +32,12 @@
                     <div class="layui-form-item">
                         <div class="layui-input-block">
                             <div class="layui-footer" style="left: 0;">
+                                <spring:hasBindErrors name="group">
+                                    <c:forEach var="err" items="${errors.globalErrors}">
+                                        ${err.defaultMessage}
+                                    </c:forEach>
+                                    <%--<form:errors path="*"/>--%>
+                                </spring:hasBindErrors>
                                 <button type="submit" class="layui-btn" lay-submit lay-filter="sys-group-create-form-submit">保存</button>
                                 <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                             </div>

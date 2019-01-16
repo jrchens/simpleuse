@@ -14,6 +14,7 @@
             <div class="layui-card-header">编辑群组</div>
             <div class="layui-card-body" style="padding: 15px;">
                 <form:form servletRelativeAction="/sys/group/update" method="post" commandName="group" cssClass="layui-form" lay-filter="sys-group-edit-form">
+                    <input type="hidden" name="_csrf_token" value="${_csrf_token}">
                     <form:hidden path="id"></form:hidden>
                     <div class="layui-form-item">
                         <label class="layui-form-label">代码</label>

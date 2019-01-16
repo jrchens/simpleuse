@@ -1,8 +1,12 @@
 package cn.com.simpleuse.sys.domain;
 
+import cn.com.simpleuse.sys.bean.BaseDomain;
+import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import org.hibernate.validator.constraints.SafeHtml;
+
 import java.util.Date;
 
-public class Group {
+public class Group /*extends BaseDomain*/ {
     private Long id;
 
     private String groupname;

@@ -6,6 +6,7 @@ import cn.com.simpleuse.sys.exception.SysServiceException;
 import cn.com.simpleuse.sys.service.GroupService;
 import cn.com.simpleuse.validator.group.Save;
 import cn.com.simpleuse.validator.group.Update;
+import cn.com.simpleuse.web.annotation.CsrfToken;
 import com.github.pagehelper.Page;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -14,6 +15,7 @@ import com.google.gson.reflect.TypeToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -24,7 +26,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -37,6 +41,7 @@ public class GroupController {
     @Autowired
     private GroupService groupService;
 
+    @CsrfToken
     @RequestMapping(value = "sys/group/index", method = RequestMethod.GET)
     public String index(Group record,Model model) {
         try {
@@ -79,9 +84,16 @@ public class GroupController {
         }
     }
 
+    @CsrfToken
     @RequestMapping(value = "sys/group/create", method = RequestMethod.GET)
-    public String create(Group record, Model model) {
+    public String create(Group record, Model model/*, HttpServletRequest request*/) {
         try {
+//            String[] names = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getServletContext()).getBeanDefinitionNames();
+//            for (String name: names
+//                 ) {
+//                logger.info("{}",name);
+//            }
+
             model.addAttribute("CURRENT_PAGE_TITLE", "sys/group/create");
             model.addAttribute(record);
             return "sys/group/create";
@@ -93,10 +105,11 @@ public class GroupController {
         }
     }
 
+    @CsrfToken(verify = true)
     @RequestMapping(value = "sys/group/save", method = RequestMethod.POST)
     public String save(@Validated(value = Save.class) Group record, BindingResult bindingResult) {
         try {
-            if (bindingResult.hasFieldErrors()) {
+            if (bindingResult.hasErrors()) {
                 return "sys/group/create";
             }
             groupService.insertSelective(record);
@@ -109,11 +122,12 @@ public class GroupController {
         }
     }
 
+    @CsrfToken
     @RequestMapping(value = "sys/group/edit", method = RequestMethod.GET)
-    public String edit(Long id, Model model) {
+    public String edit(Group record, Model model) {
         try {
             model.addAttribute("CURRENT_PAGE_TITLE", "sys/group/edit");
-            model.addAttribute(groupService.selectByPrimaryKey(id));
+            model.addAttribute(groupService.selectByPrimaryKey(record.getId()));
             return "sys/group/edit";
         } catch (SysServiceException e) {
             throw e;
@@ -123,6 +137,7 @@ public class GroupController {
         }
     }
 
+    @CsrfToken(verify = true)
     @RequestMapping(value = "sys/group/update", method = RequestMethod.POST)
     public String update(@Validated(value = Update.class) Group record, BindingResult bindingResult) {
         try {
