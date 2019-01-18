@@ -48,7 +48,7 @@ public @interface Unique {
     @OverridesAttribute(constraint = Pattern.class, name = "flags") Pattern.Flag[] flags() default {};
 
     /**
-     * Defines several {@code @Email} annotations on the same element.
+     * Defines several {@code @Unique} annotations on the same element.
      */
     @Target({METHOD, FIELD, ANNOTATION_TYPE, CONSTRUCTOR, PARAMETER})
     @Retention(RUNTIME)
