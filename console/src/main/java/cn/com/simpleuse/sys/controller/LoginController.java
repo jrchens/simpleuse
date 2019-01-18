@@ -2,6 +2,8 @@ package cn.com.simpleuse.sys.controller;
 
 import cn.com.simpleuse.sys.bean.LoginUser;
 import cn.com.simpleuse.sys.exception.SysControllerException;
+import com.google.common.base.Charsets;
+import com.google.common.hash.Hashing;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.slf4j.Logger;
@@ -27,7 +29,11 @@ public class LoginController {
     @RequestMapping(value = "login", method = RequestMethod.POST)
     public String login(LoginUser loginUser, BindingResult bindingResult, Model model) {
         try {
-            SecurityUtils.getSubject().login(new UsernamePasswordToken(loginUser.getUsername(), loginUser.getPassword(), loginUser.isRememberMe()));
+            String encUsername = Hashing.md5().hashString(loginUser.getUsername(), Charsets.UTF_8).toString();
+            String encPassword = Hashing.md5().hashString(loginUser.getPassword(), Charsets.UTF_8).toString();
+            encPassword = Hashing.md5().hashString("{".concat(encUsername).concat(":").concat(encPassword).concat("}"),Charsets.UTF_8).toString();
+
+            SecurityUtils.getSubject().login(new UsernamePasswordToken(loginUser.getUsername(), encPassword, loginUser.isRememberMe()));
             return "redirect:/console";
         } catch (Exception e) {
             logger.error("LoginController.login", e);
