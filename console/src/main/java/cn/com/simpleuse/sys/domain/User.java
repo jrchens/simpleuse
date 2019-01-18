@@ -1,14 +1,23 @@
 package cn.com.simpleuse.sys.domain;
 
+import cn.com.simpleuse.validator.constraints.Unique;
+import cn.com.simpleuse.validator.group.Save;
+import cn.com.simpleuse.validator.group.Update;
+import org.hibernate.validator.constraints.Length;
+
 import java.util.Date;
 
 public class User {
     private Long id;
 
+    @Length(min = 3, max = 20, groups = {Save.class})
+    @Unique(table = "sys_user", column = "username", groups = {Save.class, Update.class})
     private String username;
 
+    @Length(min = 3, max = 100, groups = {Save.class, Update.class})
     private String viewname;
 
+    @Length(min = 6, max = 200, groups = {Save.class})
     private String password;
 
     private Boolean deleted;

@@ -7,6 +7,8 @@ https://wiki.sei.cmu.edu/confluence/display/java/SEI+CERT+Oracle+Coding+Standard
 
 https://wiki.sei.cmu.edu/confluence/display/seccode/Top+10+Secure+Coding+Practices
 
+
+
 CSRF,XSS,SQL Injection
 http://www.cnblogs.com/Mainz/archive/2012/11/01/2749874.html
 
@@ -29,8 +31,11 @@ CsrfTokenAspectObject throw Exception
 
 ### TODO
 ```
-SpringMVC @ResponseBody XSS
 
+Spring Message Converters
+
+
+Spring AOP
 
 
 16-Jan-2019 09:44:21.664 信息 [http-nio-8080-exec-9] org.apache.coyote.http11.Http11Processor.service Error parsing HTTP request header
@@ -54,3 +59,9 @@ SpringMVC @ResponseBody XSS
 ```
 JSP EL 表达式 htmlEscape=true
 ```
+
+
+
+
+
+CSRF,XSS,SQL Injection
